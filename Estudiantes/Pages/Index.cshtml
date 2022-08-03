@@ -1,0 +1,63 @@
+﻿@page
+@using Estudiantes.Models;
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+@{
+    using (var context = new EstudianteContext())
+    {
+        var query = (from Estudiantes in context.Set<Estudiante>()
+                     join Materias in context.Set<Materia>() on Estudiantes.IdStudent equals Materias.IdStudent
+                     join Calificaciones in context.Set<Calificacione>() on Materias.IdMath equals Calificaciones.IdMath
+                     select new
+                     {
+                         FullNombres = Estudiantes.Nombres,
+                         FullApellidos = Estudiantes.Apellidos,
+                         Carrera = Estudiantes.Carrera,
+                         IdMath = Materias.IdMath,
+                         NombreMath = Materias.Nombre,
+                         Calificacion = Calificaciones.Calificacion
+
+                     }).ToList();
+
+
+        foreach (var x in query)
+        {
+    <html>
+    <body>
+                    <h1>Listado de cursos</h1>
+                            <td><strong>Nombres Estudiante:</strong></td>
+                            <td>@{Console.WriteLine($"Nombres : {x.FullNombres}");}</td>
+                            <td><strong>Apellidos Estudiante:</strong></td>
+                            <td>@{Console.WriteLine($"Apellidos : {x.FullApellidos}");}</td>
+                    
+                    <table>
+                        <tr>
+                            <td><strong>Math</strong></td>
+                            <td><strong>Calificacions</strong></td>
+                        </tr>
+                        <tr>
+                            <td>@{Console.WriteLine($"Math : {x.NombreMath}");}</td>
+                        </tr>
+                        <tr>
+                            <td>@{Console.WriteLine($"Calificacion : {x.Calificacion}");}</td>
+                        </tr>
+                    </table>
+
+    </body>
+    </html>
+
+            
+        }
+
+    };
+}
+
+
+
+
+
+
+
+
