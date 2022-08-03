@@ -1,63 +1,56 @@
 ﻿@page
 @using Estudiantes.Models;
+@using System.Linq;
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+
 }
-@{
-    using (var context = new EstudianteContext())
+@using (var context = new EstudianteContext())
+{
+    var query = (from Estudiantes in context.Set<Estudiante>()
+                 join Cuatrimestres in context.Set<Cuatrimestre>() on Estudiantes.IdStudent equals Cuatrimestres.IdStudent
+                 join Materias in context.Set<Materia>() on Cuatrimestres.IdCuatrimestre equals Materias.IdCuatrimestre
+                 join Calificaciones in context.Set<Calificacione>() on Materias.IdMath equals Calificaciones.IdMath
+                 select new
+                 {
+                     
+                     Estudiante = Estudiantes,
+                     Cuatrimestre = Cuatrimestres.Numero,
+                     IdMath = Materias.IdMath,
+                     NombreMath = Materias.Nombre,
+                     Calificacion = Calificaciones.Calificacion
+
+                 }).ToList();
+
+
+    <h1>Calificacion Estudiante</h1>
+    @foreach (var z in query.Select(x => x.Estudiante).Distinct())
     {
-        var query = (from Estudiantes in context.Set<Estudiante>()
-                     join Materias in context.Set<Materia>() on Estudiantes.IdStudent equals Materias.IdStudent
-                     join Calificaciones in context.Set<Calificacione>() on Materias.IdMath equals Calificaciones.IdMath
-                     select new
-                     {
-                         FullNombres = Estudiantes.Nombres,
-                         FullApellidos = Estudiantes.Apellidos,
-                         Carrera = Estudiantes.Carrera,
-                         IdMath = Materias.IdMath,
-                         NombreMath = Materias.Nombre,
-                         Calificacion = Calificaciones.Calificacion
+        <h5><strong>Nombres:</strong> @z.Nombres</h5>
+        <h5><strong>Apellidos:</strong> @z.Apellidos</h5>
+        <h5><strong>Carrera:</strong> @z.Carrera</h5>
+        <h5><strong>Cuatrimestres:</strong> @z.Carrera.Count()</h5>
+    }
+    <table>
+        <thead>
+            <tr>
+                <th><strong>Cuatrimestre</strong></th>
+                <th><strong>Materias</strong></th>
+                <th><strong>Calificaciones</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in query)
+            {
 
-                     }).ToList();
+                <tr>
+                    <td>@x.Cuatrimestre</td>
+                    <td>@x.NombreMath</td>
+                    <td>@x.Calificacion</td>
+                </tr>
 
-
-        foreach (var x in query)
-        {
-    <html>
-    <body>
-                    <h1>Listado de cursos</h1>
-                            <td><strong>Nombres Estudiante:</strong></td>
-                            <td>@{Console.WriteLine($"Nombres : {x.FullNombres}");}</td>
-                            <td><strong>Apellidos Estudiante:</strong></td>
-                            <td>@{Console.WriteLine($"Apellidos : {x.FullApellidos}");}</td>
-                    
-                    <table>
-                        <tr>
-                            <td><strong>Math</strong></td>
-                            <td><strong>Calificacions</strong></td>
-                        </tr>
-                        <tr>
-                            <td>@{Console.WriteLine($"Math : {x.NombreMath}");}</td>
-                        </tr>
-                        <tr>
-                            <td>@{Console.WriteLine($"Calificacion : {x.Calificacion}");}</td>
-                        </tr>
-                    </table>
-
-    </body>
-    </html>
-
-            
-        }
-
-    };
+            }
+        </tbody>
+    </table>
 }
-
-
-
-
-
-
-
-

@@ -7,7 +7,7 @@ namespace Estudiantes.Models
     {
         public Estudiante()
         {
-            Materia = new HashSet<Materia>();
+            Cuatrimestres = new HashSet<Cuatrimestre>();
         }
 
         public int Id { get; set; }
@@ -18,6 +18,6 @@ namespace Estudiantes.Models
         public string? Direccion { get; set; }
         public string? Carrera { get; set; }
 
-        public virtual ICollection<Materia> Materia { get; set; }
+        public virtual ICollection<Cuatrimestre> Cuatrimestres { get; set; }
     }
 }

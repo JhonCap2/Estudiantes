@@ -1,6 +1,12 @@
+using Estudiantes.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+//var conectionstring = builder.Configuration.GetConnectionString("DbCon");
+//builder.Services.AddDbContext<EstudianteContext>(options => options.UseSqlServer(conectionstring));
 
 var app = builder.Build();
 

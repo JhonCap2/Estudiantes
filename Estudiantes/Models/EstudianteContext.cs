@@ -15,17 +15,18 @@ namespace Estudiantes.Models
             : base(options)
         {
         }
-
+        
         public virtual DbSet<Calificacione> Calificaciones { get; set; } = null!;
         public virtual DbSet<Estudiante> Estudiantes { get; set; } = null!;
         public virtual DbSet<Materia> Materias { get; set; } = null!;
+        public virtual DbSet<Cuatrimestre> Cuatrimestres { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-T3S73U1\\SQLEXPRESS;Database=Estudiante;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-43DVFJ7\\SQLEXPRESS;Database=Estudiante;Trusted_Connection=True;");
             }
         }
 
@@ -46,6 +47,20 @@ namespace Estudiantes.Models
                     .WithMany(p => p.Calificaciones)
                     .HasForeignKey(d => d.IdMath)
                     .HasConstraintName("FK_IdMath");
+            });
+
+            modelBuilder.Entity<Cuatrimestre>(entity =>
+            {
+                entity.HasKey(e => e.IdCuatrimestre)
+                    .HasName("PK__Cuatrimestre");
+
+                entity.Property(e => e.IdCuatrimestre).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Numero)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
             });
 
             modelBuilder.Entity<Estudiante>(entity =>
@@ -92,10 +107,7 @@ namespace Estudiantes.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.IdStudentNavigation)
-                    .WithMany(p => p.Materia)
-                    .HasForeignKey(d => d.IdStudent)
-                    .HasConstraintName("FK_IdStudent");
+             
             });
 
             OnModelCreatingPartial(modelBuilder);
