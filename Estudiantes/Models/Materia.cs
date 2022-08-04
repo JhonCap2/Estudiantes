@@ -11,11 +11,11 @@ namespace Estudiantes.Models
         }
 
         public int Id { get; set; }
-        public Guid? IdCuatrimestre { get; set; }
         public Guid IdMath { get; set; }
-        public string? Nombre { get; set; }
+        public string? Materia1 { get; set; }
+        public Guid IdCuatrimestre { get; set; }
 
-        public virtual Calificacione? IdCalificacionesNavigation { get; set; }
+        public virtual Cuatrimestre IdCuatrimestreNavigation { get; set; } = null!;
         public virtual ICollection<Calificacione> Calificaciones { get; set; }
     }
 }

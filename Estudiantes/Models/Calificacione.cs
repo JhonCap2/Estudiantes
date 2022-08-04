@@ -6,10 +6,10 @@ namespace Estudiantes.Models
     public partial class Calificacione
     {
         public int Id { get; set; }
-        public Guid? IdMath { get; set; }
-        public Guid IdCal { get; set; }
-        public decimal? Calificacion { get; set; }
+        public Guid IdCalificaciones { get; set; }
+        public string? Calificacion { get; set; }
+        public Guid IdMath { get; set; }
 
-        public virtual Materia? IdMathNavigation { get; set; }
+        public virtual Materia IdMathNavigation { get; set; } = null!;
     }
 }
